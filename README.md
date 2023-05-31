@@ -4,7 +4,7 @@
 
 ### **Docente:** _Lucas Piscitello._
 
-### **Alumnas:** _Lorena Perez, María Cecilia Abate._
+### **Alumnas:** _Lorena Perez Escobar, María Cecilia Abate._
            
 
 #### <u> Descripción del desafío </u>
