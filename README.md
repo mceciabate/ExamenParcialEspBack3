@@ -30,7 +30,7 @@ Calcular el porcentaje de personas que viajan a un país determinado en un día.
 - _Requerimiento 4:_
 Ejecutar al menos una vez cada requerimiento en la función main. Las ejecuciones deben
 realizarse de manera concurrente (utilizando diferentes goroutines).
-<br>
+
 ### __*ESTE PROYECTO ESTÁ REALIZADO EN:*__
 <br>
 <img src = "./assets/pngegg.png" alt = "gopher" width="50%" aling = "right"/>
