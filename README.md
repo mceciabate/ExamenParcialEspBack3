@@ -34,4 +34,4 @@ realizarse de manera concurrente (utilizando diferentes goroutines).
 ### __*ESTE PROYECTO ESTÁ REALIZADO EN:*__
 <br>
 <img src = "./assets/pngegg.png" alt = "gopher" width="50%" aling = "right"/>
-#Esto es un cambio
+
