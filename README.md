@@ -1,4 +1,4 @@
-# desafio-go-bases
+# Desafio-go-bases
 
 ## Examen parcial para la asignatura **Especialización En Back End 3**
 
