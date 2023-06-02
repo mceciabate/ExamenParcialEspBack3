@@ -18,24 +18,25 @@ type Ticket struct {
 	Precio         string
 }
 
-var ListadoRecuperado *[]Ticket
+// TODO TRATAR ERROR
+var ListadoRecuperadoTickets, e = ObtenerDatos("tickets.csv")
 
 // TODO: Consultar si es necesario cerrar archivo
 // TODO: Falta el defer
-func ObtenerDatos(ruta string) (ListadoRecuperado *[]Ticket, e error) {
+func ObtenerDatos(ruta string) (a *[]Ticket, e error) {
 	var array []Ticket
 	var newTicket Ticket
 	var line4 string
 	var newArray [][]string
 	var otroArray []string
-	defer func ()  {
-		if r:= recover(); r!=nil{
+	defer func() {
+		if r := recover(); r != nil {
 			fmt.Println("Se produjo un error abriendo el archivo")
 		}
 	}()
 	f, err := os.Open(ruta)
 	if err != nil {
-		panic("Error de lectura") //return nil, err 	
+		panic("Error de lectura")
 	}
 	defer f.Close()
 	rawData, er := os.ReadFile(ruta)
@@ -85,7 +86,16 @@ func ObtenerDatos(ruta string) (ListadoRecuperado *[]Ticket, e error) {
 
 // ejemplo 1
 func GetTotalTickets(destination string) (int, error) {
-	return 0, nil
+	acum := 0
+	for _, v := range *ListadoRecuperadoTickets {
+		if v.PaisDestino == destination {
+			acum++
+		}
+	}
+	if acum == 0 {
+		return 0, errors.New("No se encontraron coincidencias con el destino")
+	}
+	return acum, nil
 }
 
 // ejemplo 2
