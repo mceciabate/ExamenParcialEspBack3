@@ -4,25 +4,24 @@ import (
 	"errors"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 )
 
 // id, nombre, email, país de destino, hora del vuelo y precio.
 type Ticket struct {
-	Id             int64
+	Id             string
 	NombreCompleto string
 	Email          string
 	PaisDestino    string
 	HoraVuelo      string
-	Precio         int64
+	Precio         string
 }
 
-var ListadoRecuperado []Ticket
+var ListadoRecuperado *[]Ticket
 
 // TODO: Consultar si es necesario cerrar archivo
 // TODO: Falta el defer
-func ObtenerDatos(ruta string) (a []Ticket, e error) {
+func ObtenerDatos(ruta string) (ListadoRecuperado *[]Ticket, e error) {
 	var array []Ticket
 	var newTicket Ticket
 	var line4 string
@@ -47,21 +46,21 @@ func ObtenerDatos(ruta string) (a []Ticket, e error) {
 			line3 := newArray[i]
 			line4 = strings.Join(line3, " ")
 			otroArray = strings.Split(line4, ",")
-			id, err := strconv.ParseInt(otroArray[0], 16, 64)
-			if err != nil {
-				log.Fatal("Error de conversión")
-			}
-			precio, err1 := strconv.ParseInt(otroArray[5], 16, 64)
-			if err1 != nil {
-				log.Fatal("Error de conversión")
-			}
+			// id, err := strconv.ParseInt(otroArray[0], 16, 64)
+			// if err != nil {
+			// 	log.Fatal("Error de conversión")
+			// }
+			// precio, err1 := strconv.ParseInt(otroArray[5], 16, 64)
+			// if err1 != nil {
+			// 	log.Fatal("Error de conversión")
+			// }
 			newTicket = Ticket{
-				Id:             id,
+				Id:             otroArray[0],
 				NombreCompleto: otroArray[1],
 				Email:          otroArray[2],
 				PaisDestino:    otroArray[3],
 				HoraVuelo:      otroArray[4],
-				Precio:         precio,
+				Precio:         otroArray[5],
 			}
 			array = append(array, newTicket)
 		}
@@ -74,7 +73,7 @@ func ObtenerDatos(ruta string) (a []Ticket, e error) {
 		log.Fatal("No se puede cerrar el archivo")
 	}
 
-	return nil, nil
+	return &array, nil
 }
 
 // ejemplo 1
