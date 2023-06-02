@@ -2,6 +2,7 @@ package tickets
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -27,10 +28,16 @@ func ObtenerDatos(ruta string) (ListadoRecuperado *[]Ticket, e error) {
 	var line4 string
 	var newArray [][]string
 	var otroArray []string
+	defer func ()  {
+		if r:= recover(); r!=nil{
+			fmt.Println("Se produjo un error abriendo el archivo")
+		}
+	}()
 	f, err := os.Open(ruta)
 	if err != nil {
-		panic(err)
+		panic("Error de lectura") //return nil, err 	
 	}
+	defer f.Close()
 	rawData, er := os.ReadFile(ruta)
 	if er != nil {
 		panic("Error de lectura de archivo")

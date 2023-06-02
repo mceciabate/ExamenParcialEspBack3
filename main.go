@@ -10,6 +10,6 @@ import (
 func main() {
 	// total, err := tickets.GetTotalTickets("Brazil")
 	lista, _ := tickets.ObtenerDatos("tickets.csv")
-	fmt.Println(lista)
+	fmt.Println(lista,"----------------------")
 
 }
