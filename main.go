@@ -9,7 +9,9 @@ import (
 
 func main() {
 	// total, err := tickets.GetTotalTickets("Brazil")
-	lista, _ := tickets.ObtenerDatos("tickets.csv")
-	fmt.Println(lista,"----------------------")
+	// lista, _ := tickets.ObtenerDatos("tickets.csv")
+	// fmt.Println(lista,"----------------------")
 
+	totalTickets, _:=	tickets.GetTotalTickets("Colombia")
+fmt.Println(totalTickets)
 }

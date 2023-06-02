@@ -85,7 +85,17 @@ func ObtenerDatos(ruta string) (ListadoRecuperado *[]Ticket, e error) {
 
 // ejemplo 1
 func GetTotalTickets(destination string) (int, error) {
-	return 0, nil
+	acum := 0
+	
+	for _, v := range *ListadoRecuperado {
+		if v.PaisDestino == destination {
+			acum ++
+		}
+	}
+	if acum == 0 {
+		return 0, errors.New("No se encontraron coincidencias con el destino")
+	}
+	return acum, nil
 }
 
 // ejemplo 2
