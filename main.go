@@ -5,14 +5,9 @@ import (
 	"log"
 
 	"github.com/mceciabate/ExamenParcialEspBack3/internal/tickets"
-	// "github.com/mceciabate/ExamenParcialEspBack3/tickets"
 )
 
 func main() {
-	// total, err := tickets.GetTotalTickets("Brazil")
-	// lista, _ := tickets.ObtenerDatos("tickets.csv")
-	// fmt.Println(lista,"----------------------")
-	fmt.Println(tickets.ListadoRecuperadoTickets)
 	var pais string
 	fmt.Println("Por favor ingrese un destino: ")
 	fmt.Scan(&pais)
@@ -20,7 +15,13 @@ func main() {
 	if e != nil {
 		log.Fatal(e)
 	}
-
-	// totalTickets, _:=	tickets.GetTotalTickets("Colombia")
 	fmt.Println(totalTickets)
+	var franjaHoraria string
+	fmt.Println("Ingrese una franja horaria (Disponibles: Madrugada, Mañana, Tarde, Noche):")
+	fmt.Scan(&franjaHoraria)
+	totalVuelosTime, e := tickets.GetTime(franjaHoraria)
+	if e != nil {
+		log.Fatal(e)
+	}
+	fmt.Println(totalVuelosTime)
 }

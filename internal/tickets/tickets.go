@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -99,11 +100,49 @@ func GetTotalTickets(destination string) (int, error) {
 }
 
 // ejemplo 2
-func GetMornings(time string) (int, error) {
-	return 0, nil
+func GetTime(time string) (int, error) {
+
+	var listaMañana []int
+	var listaTarde []int
+	var listaNoche []int
+	var listaMadrugada []int
+
+	for _, v := range *ListadoRecuperadoTickets {
+		hora := strings.Split(v.HoraVuelo, ":")
+		horaInt, err := strconv.Atoi(hora[0])
+		if err != nil {
+			log.Fatal(err)
+		}
+		switch {
+		case horaInt >= 0 && horaInt <= 6:
+			listaMadrugada = append(listaMadrugada, horaInt)
+
+		case horaInt >= 7 && horaInt <= 12:
+			listaMañana = append(listaMañana, horaInt)
+		case horaInt >= 13 && horaInt <= 19:
+			listaTarde = append(listaTarde, horaInt)
+
+		case horaInt >= 20 && horaInt <= 23:
+			listaNoche = append(listaNoche, horaInt)
+		}
+
+	}
+	switch time {
+	case "Madrugada":
+		return len(listaMadrugada), nil
+	case "Mañana":
+		return len(listaMañana), nil
+	case "Tarde":
+		return len(listaTarde), nil
+	case "Noche":
+		return len(listaNoche), nil
+	default:
+		return 0, errors.New("Ingrese una franja horaria válida")
+
+	}
+
 }
 
-// ejemplo 3
 func AverageDestination(destination string, total int) (int, error) {
 	return 0, nil
 }
