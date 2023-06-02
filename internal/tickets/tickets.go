@@ -28,14 +28,14 @@ func ObtenerDatos(ruta string) (ListadoRecuperado *[]Ticket, e error) {
 	var line4 string
 	var newArray [][]string
 	var otroArray []string
-	defer func ()  {
-		if r:= recover(); r!=nil{
+	defer func() {
+		if r := recover(); r != nil {
 			fmt.Println("Se produjo un error abriendo el archivo")
 		}
 	}()
 	f, err := os.Open(ruta)
 	if err != nil {
-		panic("Error de lectura") //return nil, err 	
+		panic("Error de lectura") //return nil, err
 	}
 	defer f.Close()
 	rawData, er := os.ReadFile(ruta)
@@ -85,11 +85,13 @@ func ObtenerDatos(ruta string) (ListadoRecuperado *[]Ticket, e error) {
 
 // ejemplo 1
 func GetTotalTickets(destination string) (int, error) {
+	var Listado *[]Ticket
+	Listado, _ = ObtenerDatos("tickets.csv")
 	acum := 0
-	
-	for _, v := range *ListadoRecuperado {
+
+	for _, v := range *Listado {
 		if v.PaisDestino == destination {
-			acum ++
+			acum++
 		}
 	}
 	if acum == 0 {
