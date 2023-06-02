@@ -8,16 +8,14 @@ import (
 )
 
 func main() {
-	// fmt.Println(tickets.ListadoRecuperadoTickets)
-	// var pais string
-	// fmt.Println("Por favor ingrese un destino: ")
-	// fmt.Scan(&pais)
-	// totalTickets, e := tickets.GetTotalTickets(pais)
-	// if e != nil {
-	// 	log.Fatal(e)
-	// }
-	// fmt.Println(totalTickets)
-
+	var pais string
+	fmt.Println("Por favor ingrese un destino: ")
+	fmt.Scan(&pais)
+	totalTickets, e := tickets.GetTotalTickets(pais)
+	if e != nil {
+		log.Fatal(e)
+	}
+	fmt.Println(totalTickets)
 	var franjaHoraria string
 	fmt.Println("Ingrese una franja horaria (Disponibles: Madrugada, Mañana, Tarde, Noche):")
 	fmt.Scan(&franjaHoraria)
