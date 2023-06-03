@@ -161,19 +161,19 @@ func GetTime(time string) (int, error) {
 
 // Función para obtener porcentaje segun destino
 func AverageDestination(destino string) (float64, error) {
-	e :=errors.New("Error en el listado ")
+	e := errors.New("Error en el listado ")
 	totalListado := float64(len(*ListadoRecuperadoTickets))
-	totalDestinos, err := GetTotalTickets(destino)
+	totalDestinos, er := GetTotalTickets(destino)
 	parseTotalDestinos := float64(totalDestinos)
-	if err != nil {
-		fmt.Println(err)
+	if er != nil {
+		log.Fatal(er)
 	}
 	if totalListado == 0 {
 		fmt.Println(e)
 		return 0, e
 	}
 	porcentaje := (parseTotalDestinos * 100) / totalListado
-	fmt.Printf("El porcentaje total de tickets para destino %s es %2f",destino,porcentaje )
-	
+	fmt.Printf("El porcentaje total de tickets para destino %s es %.2f", destino, porcentaje)
+
 	return porcentaje, nil
 }
