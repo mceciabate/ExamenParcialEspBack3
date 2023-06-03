@@ -16,15 +16,15 @@ func main() {
 	fmt.Scan(&pais)
 
 	//GO ROUTINE 1 (Ejemplo de invocacion de una función dentro de una función anónima)
-	go func (p string){
-		total, err :=tickets.GetTotalTickets(pais)
+	go func(p string) {
+		total, err := tickets.GetTotalTickets(pais)
 		if err != nil {
 			fmt.Println(err)
 		}
 		fmt.Printf("La cantidad total de tickets para %s es %d", pais, total)
 	}(pais)
-	
-		time.Sleep(1 * time.Second)
+
+	time.Sleep(1 * time.Second)
 
 	var franjaHoraria string
 	fmt.Println("\nIngrese una franja horaria (Disponibles: Madrugada, Mañana, Tarde, Noche):")
@@ -44,7 +44,7 @@ func main() {
 	}(destinoPorcentaje)
 	time.Sleep(1 * time.Second)
 
-	//SI QUIERE VER EL LISTADO COMPLETO OBTENIDO DESCOMENTE ESTA FUNCIÓN
+	// SI QUIERE VER EL LISTADO COMPLETO OBTENIDO DESCOMENTE ESTA FUNCIÓN
 	// go func() {
 	// 	Listado, e := tickets.ObtenerDatos("tickets.csv")
 	// 	if e != nil {
