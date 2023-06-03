@@ -43,7 +43,7 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	if er != nil {
 		panic("Error de lectura de archivo")
 	}
-	data := strings.Split(string(rawData), "\n")
+	data := strings.Split(string(rawData), "\n ")
 	for _, v := range data {
 		line := strings.Split(v, "\n")
 		for _, v := range line {
@@ -72,7 +72,6 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	if err5 != nil {
 		log.Fatal("No se puede cerrar el archivo")
 	}
-
 	return array, nil
 }
 
