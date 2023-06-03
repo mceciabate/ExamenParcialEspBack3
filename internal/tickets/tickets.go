@@ -3,13 +3,11 @@ package tickets
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
 )
 
-// id, nombre, email, país de destino, hora del vuelo y precio.
 type Ticket struct {
 	Id             string
 	NombreCompleto string
@@ -19,14 +17,16 @@ type Ticket struct {
 	Precio         string
 }
 
-var archivo string = "ticket.csv"
-func manejoPanics(){
-	a:=recover()
+var archivo string = "tickets.csv"
+
+func manejoPanics() {
+	a := recover()
 	if a != nil {
-		fmt.Println("Cortando ejecucion: ", a)
+		fmt.Println("Cortando ejecución: ", a)
 	}
 }
-// Funcion para obtener datos
+
+// Función para obtener datos a partir del archivo.csv
 func ObtenerDatos(ruta string) ([]Ticket, error) {
 	var array []Ticket
 	var newTicket Ticket
@@ -66,11 +66,11 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	return array, nil
 }
 
-// Funcion para obtener el listado de Tickets según destino
-func ObtenerTotalTickets(destino string) (int, error) {
+// Función para obtener el listado de Tickets según destino
+func ObtenerTotalTicketsDestino(destino string) (int, error) {
 	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
 	if err != nil {
-		panic("No se puede obtener el listado")
+		fmt.Println(err)
 	}
 	e := errors.New("No se encontraron coincidencias con el destino")
 	acum := 0
@@ -85,11 +85,12 @@ func ObtenerTotalTickets(destino string) (int, error) {
 	return acum, nil
 }
 
-// Función para obtener Tickets segun franja horaria
+// Función para obtener Tickets según franja horaria
 func ObtenerTicketsFranjaHoraria(time string) (int, error) {
+	defer manejoPanics()
 	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
 	if err != nil {
-		panic("No se puede obtener el listado")
+		fmt.Println(err)
 	}
 	e := errors.New("Ingrese una franja horaria válida")
 	var listaMañana []int
@@ -101,8 +102,7 @@ func ObtenerTicketsFranjaHoraria(time string) (int, error) {
 		hora := strings.Split(v.HoraVuelo, ":")
 		horaInt, err := strconv.Atoi(hora[0])
 		if err != nil {
-			fmt.Println(err)
-			// log.Fatal(err)
+			panic("Error de conversión de dato")
 		}
 		switch {
 		case horaInt >= 0 && horaInt <= 6:
@@ -144,25 +144,25 @@ func ObtenerTicketsFranjaHoraria(time string) (int, error) {
 
 }
 
-// Función para obtener porcentaje segun destino
+// Función para obtener porcentaje según destino
 func ObtenerPromedioDestinos(destino string) (float64, error) {
 	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
 	if err != nil {
-		panic("No se puede obtener el listado")
+		fmt.Println(err)
 	}
-	e := errors.New("Error en el listado ")
+	e := errors.New("Error en el listado")
 	totalListado := float64(len(ListadoRecuperadoTickets))
-	totalDestinos, er := ObtenerTicketsFranjaHoraria(destino)
+	totalDestinos, er := ObtenerTotalTicketsDestino(destino)
 	parseTotalDestinos := float64(totalDestinos)
 	if er != nil {
-		log.Fatal(er)
+		fmt.Println(er)
 	}
 	if totalListado == 0 {
 		fmt.Println(e)
 		return 0, e
 	}
 	porcentaje := (parseTotalDestinos * 100) / totalListado
-	fmt.Printf("El porcentaje total de tickets para destino %s es %.2f", destino, porcentaje)
+	fmt.Printf("El porcentaje total de tickets para el destino %s es %.2f", destino, porcentaje)
 
 	return porcentaje, nil
 }
