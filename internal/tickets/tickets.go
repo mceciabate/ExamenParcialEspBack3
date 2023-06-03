@@ -27,8 +27,8 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	var array []Ticket
 	var newTicket Ticket
 	var line4 string
-	var newArray [][]string
-	var otroArray []string
+	var arrayStrings [][]string
+	var arrayTicket []string
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println("Se produjo un error abriendo el archivo")
@@ -43,32 +43,24 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	if er != nil {
 		panic("Error de lectura de archivo")
 	}
-	data := strings.Split(string(rawData), "; ")
+	data := strings.Split(string(rawData), "\n")
 	for _, v := range data {
 		line := strings.Split(v, "\n")
 		for _, v := range line {
 			line2 := strings.Split(v, " ")
-			newArray = append(newArray, line2)
+			arrayStrings = append(arrayStrings, line2)
 		}
-		for i := 0; i < len(newArray); i++ {
-			line3 := newArray[i]
+		for i := 0; i < len(arrayStrings); i++ {
+			line3 := arrayStrings[i]
 			line4 = strings.Join(line3, " ")
-			otroArray = strings.Split(line4, ",")
-			// id, err := strconv.ParseInt(otroArray[0], 16, 64)
-			// if err != nil {
-			// 	log.Fatal("Error de conversión")
-			// }
-			// precio, err1 := strconv.ParseInt(otroArray[5], 16, 64)
-			// if err1 != nil {
-			// 	log.Fatal("Error de conversión")
-			// }
+			arrayTicket = strings.Split(line4, ",")
 			newTicket = Ticket{
-				Id:             otroArray[0],
-				NombreCompleto: otroArray[1],
-				Email:          otroArray[2],
-				PaisDestino:    otroArray[3],
-				HoraVuelo:      otroArray[4],
-				Precio:         otroArray[5],
+				Id:             arrayTicket[0],
+				NombreCompleto: arrayTicket[1],
+				Email:          arrayTicket[2],
+				PaisDestino:    arrayTicket[3],
+				HoraVuelo:      arrayTicket[4],
+				Precio:         arrayTicket[5],
 			}
 			array = append(array, newTicket)
 		}
