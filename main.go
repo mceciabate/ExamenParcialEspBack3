@@ -9,11 +9,13 @@ import (
 
 func main() {
 
+	fmt.Println("Bienvenido a GolangAirlines")
+
 	var pais string
 	fmt.Println("Por favor ingrese un destino: ")
 	fmt.Scan(&pais)
 
-	//GO ROUTINE 1
+	//GO ROUTINE 1 (Ejemplo de invocacion de una función dentro de una función anónima)
 	go func(p string) {
 		tickets.GetTotalTickets(pais)
 	}(pais)
@@ -23,10 +25,8 @@ func main() {
 	fmt.Println("\nIngrese una franja horaria (Disponibles: Madrugada, Mañana, Tarde, Noche):")
 	fmt.Scan(&franjaHoraria)
 
-	//GO ROUTINE 2
-	go func(f string) {
-		tickets.GetTime(franjaHoraria)
-	}(franjaHoraria)
+	//GO ROUTINE 2 (Ejemplo de routine invocando la función con la paralabra reservada "go")
+	go tickets.GetTime(franjaHoraria)
 	time.Sleep(1 * time.Second)
 
 	var destinoPorcentaje string
@@ -38,4 +38,16 @@ func main() {
 		tickets.AverageDestination(destinoPorcentaje)
 	}(destinoPorcentaje)
 	time.Sleep(1 * time.Second)
+
+	//SI QUIERE VER EL LISTADO COMPLETO OBTENIDO DESCOMENTE ESTA FUNCIÓN
+	// go func() {
+	// 	Listado, e := tickets.ObtenerDatos("tickets.csv")
+	// 	if e != nil {
+	// 		fmt.Println(e)
+	// 	}
+	// 	fmt.Println("*******LISTADO COMPLETO DE TICKETS**********")
+	// 	fmt.Println(Listado)
+	// }()
+	// time.Sleep(1 * time.Second)
+
 }
