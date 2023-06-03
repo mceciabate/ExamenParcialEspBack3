@@ -85,7 +85,7 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 }
 
 // Funcion para obtener el listado de Tickets según destino
-func GetTotalTickets(destination string) (int, error) {
+func GetTotalTickets(destino string) (int, error) {
 	ListadoRecuperadoTickets, err := ObtenerDatos("tickets.csv")
 	if err != nil {
 		panic("No se puede obtener el listado")
@@ -93,15 +93,15 @@ func GetTotalTickets(destination string) (int, error) {
 	e := errors.New("No se encontraron coincidencias con el destino")
 	acum := 0
 	for _, v := range ListadoRecuperadoTickets {
-		if v.PaisDestino == destination {
+		if v.PaisDestino == destino {
 			acum++
 		}
 	}
 	if acum == 0 {
-		fmt.Println(e)
+		// fmt.Println(e)
 		return 0, e
 	}
-	fmt.Printf("La cantidad total de tickets para %s es %d", destination, acum)
+	// fmt.Printf("La cantidad total de tickets para %s es %d", destino, acum)
 	return acum, nil
 }
 
@@ -182,7 +182,7 @@ func AverageDestination(destino string) (float64, error) {
 		return 0, e
 	}
 	porcentaje := (parseTotalDestinos * 100) / totalListado
-	fmt.Printf("\nEl porcentaje total de tickets para destino %s es %.2f", destino, porcentaje)
+	fmt.Printf("El porcentaje total de tickets para destino %s es %.2f", destino, porcentaje)
 
 	return porcentaje, nil
 }
