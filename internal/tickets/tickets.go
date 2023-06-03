@@ -7,6 +7,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	// "golang.org/x/tools/go/analysis/passes/ifaceassert"
 )
 
 // id, nombre, email, país de destino, hora del vuelo y precio.
@@ -143,6 +145,16 @@ func GetTime(time string) (int, error) {
 
 }
 
-func AverageDestination(destination string, total int) (int, error) {
-	return 0, nil
+func AverageDestination(destination string) (float64, error) {
+	totalListado := float64(len(*ListadoRecuperadoTickets))
+	totalDestinos, err:= GetTotalTickets(destination)
+	parseTotalDestinos:= float64(totalDestinos)
+	if err != nil{
+		fmt.Println(err)
+	}
+	if totalListado == 0{
+		return 0, errors.New("Error en el listado ")
+	}
+	porcentaje:=(parseTotalDestinos*100)/totalListado
+	return porcentaje, nil
 }
