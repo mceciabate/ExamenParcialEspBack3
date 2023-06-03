@@ -19,9 +19,13 @@ type Ticket struct {
 	Precio         string
 }
 
-// TODO: Consultar si es necesario cerrar archivo
-// TODO: Falta el defer
-
+var archivo string = "ticket.csv"
+func manejoPanics(){
+	a:=recover()
+	if a != nil {
+		fmt.Println("Cortando ejecucion: ", a)
+	}
+}
 // Funcion para obtener datos
 func ObtenerDatos(ruta string) ([]Ticket, error) {
 	var array []Ticket
@@ -29,16 +33,7 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	var line4 string
 	var arrayStrings [][]string
 	var arrayTicket []string
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("Se produjo un error abriendo el archivo")
-		}
-	}()
-	f, err := os.Open(ruta)
-	if err != nil {
-		panic("Error de lectura")
-	}
-	defer f.Close()
+	defer manejoPanics()
 	rawData, er := os.ReadFile(ruta)
 	if er != nil {
 		panic("Error de lectura de archivo")
@@ -68,16 +63,12 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 			return nil, errors.New("No se ha generado el listado de forma correcta")
 		}
 	}
-	err5 := f.Close()
-	if err5 != nil {
-		log.Fatal("No se puede cerrar el archivo")
-	}
 	return array, nil
 }
 
 // Funcion para obtener el listado de Tickets según destino
-func GetTotalTickets(destino string) (int, error) {
-	ListadoRecuperadoTickets, err := ObtenerDatos("tickets.csv")
+func ObtenerTotalTickets(destino string) (int, error) {
+	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
 	if err != nil {
 		panic("No se puede obtener el listado")
 	}
@@ -89,16 +80,14 @@ func GetTotalTickets(destino string) (int, error) {
 		}
 	}
 	if acum == 0 {
-		// fmt.Println(e)
 		return 0, e
 	}
-	// fmt.Printf("La cantidad total de tickets para %s es %d", destino, acum)
 	return acum, nil
 }
 
 // Función para obtener Tickets segun franja horaria
-func GetTime(time string) (int, error) {
-	ListadoRecuperadoTickets, err := ObtenerDatos("tickets.csv")
+func ObtenerTicketsFranjaHoraria(time string) (int, error) {
+	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
 	if err != nil {
 		panic("No se puede obtener el listado")
 	}
@@ -156,14 +145,14 @@ func GetTime(time string) (int, error) {
 }
 
 // Función para obtener porcentaje segun destino
-func AverageDestination(destino string) (float64, error) {
-	ListadoRecuperadoTickets, err := ObtenerDatos("tickets.csv")
+func ObtenerPromedioDestinos(destino string) (float64, error) {
+	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
 	if err != nil {
 		panic("No se puede obtener el listado")
 	}
 	e := errors.New("Error en el listado ")
 	totalListado := float64(len(ListadoRecuperadoTickets))
-	totalDestinos, er := GetTotalTickets(destino)
+	totalDestinos, er := ObtenerTicketsFranjaHoraria(destino)
 	parseTotalDestinos := float64(totalDestinos)
 	if er != nil {
 		log.Fatal(er)

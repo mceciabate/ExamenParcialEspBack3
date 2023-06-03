@@ -17,7 +17,7 @@ func main() {
 
 	//GO ROUTINE 1 (Ejemplo de invocacion de una función dentro de una función anónima)
 	go func(p string) {
-		total, err := tickets.GetTotalTickets(pais)
+		total, err := tickets.ObtenerTotalTickets(pais)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -31,7 +31,7 @@ func main() {
 	fmt.Scan(&franjaHoraria)
 
 	//GO ROUTINE 2 (Ejemplo de routine invocando la función con la paralabra reservada "go")
-	go tickets.GetTime(franjaHoraria)
+	go tickets.ObtenerTicketsFranjaHoraria(franjaHoraria)
 	time.Sleep(1 * time.Second)
 
 	var destinoPorcentaje string
@@ -40,7 +40,7 @@ func main() {
 
 	//GO ROUTINE 3
 	go func(d string) {
-		tickets.AverageDestination(destinoPorcentaje)
+		tickets.ObtenerPromedioDestinos(destinoPorcentaje)
 	}(destinoPorcentaje)
 	time.Sleep(1 * time.Second)
 
