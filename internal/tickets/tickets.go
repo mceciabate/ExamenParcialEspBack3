@@ -24,6 +24,8 @@ var ListadoRecuperadoTickets, e = ObtenerDatos("tickets.csv")
 
 // TODO: Consultar si es necesario cerrar archivo
 // TODO: Falta el defer
+
+// Funcion para obtener datos
 func ObtenerDatos(ruta string) (a *[]Ticket, e error) {
 	var array []Ticket
 	var newTicket Ticket
@@ -85,7 +87,7 @@ func ObtenerDatos(ruta string) (a *[]Ticket, e error) {
 	return &array, nil
 }
 
-// ejemplo 1
+// Funcion para obtener el listado de Tickets según destino
 func GetTotalTickets(destination string) (int, error) {
 	acum := 0
 	for _, v := range *ListadoRecuperadoTickets {
@@ -99,7 +101,7 @@ func GetTotalTickets(destination string) (int, error) {
 	return acum, nil
 }
 
-// ejemplo 2
+// Función para obtener Tickets segun franja horaria
 func GetTime(time string) (int, error) {
 
 	var listaMañana []int
@@ -143,6 +145,17 @@ func GetTime(time string) (int, error) {
 
 }
 
-func AverageDestination(destination string, total int) (int, error) {
-	return 0, nil
+// Función para obtener porcentaje segun destino
+func AverageDestination(destination string) (float64, error) {
+	totalListado := float64(len(*ListadoRecuperadoTickets))
+	totalDestinos, err := GetTotalTickets(destination)
+	parseTotalDestinos := float64(totalDestinos)
+	if err != nil {
+		fmt.Println(err)
+	}
+	if totalListado == 0 {
+		return 0, errors.New("Error en el listado ")
+	}
+	porcentaje := (parseTotalDestinos * 100) / totalListado
+	return porcentaje, nil
 }
