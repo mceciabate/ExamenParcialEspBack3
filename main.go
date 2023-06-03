@@ -9,20 +9,20 @@ import (
 
 func main() {
 
-	fmt.Println("Bienvenido a GolangAirlines")
+	fmt.Println("***BIENVENIDO A GOLANGAIRLINES***")
 
-	var pais string
+	var destino string
 	fmt.Println("Por favor ingrese un destino: ")
-	fmt.Scan(&pais)
+	fmt.Scan(&destino)
 
-	//GO ROUTINE 1 (Ejemplo de invocacion de una función dentro de una función anónima)
+	//GO ROUTINE 1 (Ejemplo de invocación de una función dentro de una función anónima)
 	go func(p string) {
-		total, err := tickets.GetTotalTickets(pais)
+		total, err := tickets.ObtenerTotalTicketsDestino(destino)
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Printf("La cantidad total de tickets para %s es %d", pais, total)
-	}(pais)
+		fmt.Printf("La cantidad total de tickets para %s es %d", destino, total)
+	}(destino)
 
 	time.Sleep(1 * time.Second)
 
@@ -31,20 +31,22 @@ func main() {
 	fmt.Scan(&franjaHoraria)
 
 	//GO ROUTINE 2 (Ejemplo de routine invocando la función con la paralabra reservada "go")
-	go tickets.GetTime(franjaHoraria)
+	go tickets.ObtenerTicketsFranjaHoraria(franjaHoraria)
 	time.Sleep(1 * time.Second)
 
 	var destinoPorcentaje string
-	fmt.Println("\nDigite el destino para saber el porcentaje de pasajeros que viajo en el dia")
+	fmt.Println("\nDigite el destino para saber el porcentaje de pasajeros que viajó en el día")
 	fmt.Scan(&destinoPorcentaje)
 
 	//GO ROUTINE 3
 	go func(d string) {
-		tickets.AverageDestination(destinoPorcentaje)
+		tickets.ObtenerPromedioDestinos(destinoPorcentaje)
 	}(destinoPorcentaje)
 	time.Sleep(1 * time.Second)
 
-	// SI QUIERE VER EL LISTADO COMPLETO OBTENIDO DESCOMENTE ESTA FUNCIÓN
+	fmt.Println("\n***GRACIAS POR USAR EL SERVICIO DE GOLANGAIRLINES***")
+
+	// SI QUIERE VER EL LISTADO COMPLETO OBTENIDO DESCOMENTE ESTA SECCIÓN
 	// go func() {
 	// 	Listado, e := tickets.ObtenerDatos("tickets.csv")
 	// 	if e != nil {
