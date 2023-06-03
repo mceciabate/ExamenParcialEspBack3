@@ -106,7 +106,7 @@ func GetTotalTickets(destination string) (int, error) {
 
 // Función para obtener Tickets segun franja horaria
 func GetTime(time string) (int, error) {
-
+	e := errors.New("Ingrese una franja horaria válida")
 	var listaMañana []int
 	var listaTarde []int
 	var listaNoche []int
@@ -116,7 +116,8 @@ func GetTime(time string) (int, error) {
 		hora := strings.Split(v.HoraVuelo, ":")
 		horaInt, err := strconv.Atoi(hora[0])
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
+			// log.Fatal(err)
 		}
 		switch {
 		case horaInt >= 0 && horaInt <= 6:
@@ -132,33 +133,47 @@ func GetTime(time string) (int, error) {
 		}
 
 	}
+	var total int
 	switch time {
 	case "Madrugada":
-		return len(listaMadrugada), nil
+		total = len(listaMadrugada)
+		fmt.Printf("La cantidad total de tickets para la madrugada es %d ", total)
+		return total, nil
 	case "Mañana":
-		return len(listaMañana), nil
+		total = len(listaMañana)
+		fmt.Printf("La cantidad total de tickets para la mañana es %d", total)
+		return total, nil
 	case "Tarde":
-		return len(listaTarde), nil
+		total = len(listaTarde)
+		fmt.Printf("La cantidad total de tickets para la tarde es %d", total)
+		return total, nil
 	case "Noche":
-		return len(listaNoche), nil
+		total = len(listaNoche)
+		fmt.Printf("La cantidad total de tickets para la noche es %d", total)
+		return total, nil
 	default:
-		return 0, errors.New("Ingrese una franja horaria válida")
+		fmt.Println(e)
+		return 0, e
 
 	}
 
 }
 
 // Función para obtener porcentaje segun destino
-func AverageDestination(destination string) (float64, error) {
+func AverageDestination(destino string) (float64, error) {
+	e :=errors.New("Error en el listado ")
 	totalListado := float64(len(*ListadoRecuperadoTickets))
-	totalDestinos, err := GetTotalTickets(destination)
+	totalDestinos, err := GetTotalTickets(destino)
 	parseTotalDestinos := float64(totalDestinos)
 	if err != nil {
 		fmt.Println(err)
 	}
 	if totalListado == 0 {
-		return 0, errors.New("Error en el listado ")
+		fmt.Println(e)
+		return 0, e
 	}
 	porcentaje := (parseTotalDestinos * 100) / totalListado
+	fmt.Printf("El porcentaje total de tickets para destino %s es %2f",destino,porcentaje )
+	
 	return porcentaje, nil
 }

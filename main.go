@@ -20,21 +20,21 @@ func main() {
 	}(pais)
 	time.Sleep(1 * time.Second)
 
-	// var franjaHoraria string
-	// fmt.Println("Ingrese una franja horaria (Disponibles: Madrugada, Mañana, Tarde, Noche):")
-	// fmt.Scan(&franjaHoraria)
-	// totalVuelosTime, e := tickets.GetTime(franjaHoraria)
-	// if e != nil {
-	// 	fmt.Println(e)
-	// }
-	// fmt.Println(totalVuelosTime)
-	// var destinoPorcentaje string
-	// fmt.Println("Digite el destino para saber el porcentaje de pasajeros que viajo en el dia")
-	// fmt.Scan(&destinoPorcentaje)
-	// porcentajeDestino, err := tickets.AverageDestination(destinoPorcentaje)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Println(porcentajeDestino)
+	var franjaHoraria string
+	fmt.Println("\nIngrese una franja horaria (Disponibles: Madrugada, Mañana, Tarde, Noche):")
+	fmt.Scan(&franjaHoraria)
+	go func (f string)  {
+		tickets.GetTime(franjaHoraria)
+	}(franjaHoraria)
+	time.Sleep(1 * time.Second)
+	
+	var destinoPorcentaje string
+	fmt.Println("\nDigite el destino para saber el porcentaje de pasajeros que viajo en el dia")
+	fmt.Scan(&destinoPorcentaje)
 
+	go func(d string) {
+		tickets.AverageDestination(destinoPorcentaje)
+	}(destinoPorcentaje)
+	time.Sleep(1 * time.Second)
+	
 }
