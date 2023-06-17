@@ -91,55 +91,85 @@ func ObtenerTicketsFranjaHoraria(time string, a []Ticket) (int, error) {
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
-	e := errors.New("\nIngrese una franja horaria válida")
-	var listaMañana []int
-	var listaTarde []int
-	var listaNoche []int
-	var listaMadrugada []int
-
+	// var listaMañana []int
+	// var listaTarde []int
+	// var listaNoche []int
+	// var listaMadrugada []int
+	var cont int = 0
 	for _, v := range a {
 		hora := strings.Split(v.HoraVuelo, ":")
 		horaInt, err := strconv.Atoi(hora[0])
 		if err != nil {
 			panic("Error de conversión de dato")
 		}
-		switch {
-		case horaInt >= 0 && horaInt <= 6:
-			listaMadrugada = append(listaMadrugada, horaInt)
+		switch time {
+		case "Madrugada":
+			if horaInt >= 0 && horaInt <= 6 {
+				cont++
+			}
+			fmt.Printf("\nLa cantidad total de tickets para la madrugada es %d", cont)
+			// return cont, nil
+			// listaMadrugada = append(listaMadrugada, horaInt)
+		case "Mañana":
+			if horaInt >= 7 && horaInt <= 12 {
+				cont++
+			}
+			fmt.Printf("\nLa cantidad total de tickets para la mañana es %d\n", cont)
+			// return cont, nil
 
-		case horaInt >= 7 && horaInt <= 12:
-			listaMañana = append(listaMañana, horaInt)
-		case horaInt >= 13 && horaInt <= 19:
-			listaTarde = append(listaTarde, horaInt)
+			// listaMañana = append(listaMañana, horaInt)
+		case "Tarde":
+			if horaInt >= 13 && horaInt <= 19 {
+				cont++
+			}
+			fmt.Printf("\nLa cantidad total de tickets para la tarde es %d\n", cont)
+			// return cont, nil
+			// listaTarde = append(listaTarde, horaInt)
+		case "Noche":
+			if horaInt >= 20 && horaInt <= 23 {
+				cont++
+			}
+			fmt.Printf("\nLa cantidad total de tickets para la noche es %d\n", cont)
+			// return cont, nil
 
-		case horaInt >= 20 && horaInt <= 23:
-			listaNoche = append(listaNoche, horaInt)
+			// listaNoche = append(listaNoche, horaInt)
+		default:
+			// fmt.Println(e)
+			fmt.Println("Ingrese una franja horaria valida")
+			// return 0, errors.New("\nIngrese una franja horaria válida")
+
 		}
-
 	}
-	var total int
-	switch time {
-	case "Madrugada":
-		total = len(listaMadrugada)
-		fmt.Printf("\nLa cantidad total de tickets para la madrugada es %d", total)
-		return total, nil
-	case "Mañana":
-		total = len(listaMañana)
-		fmt.Printf("\nLa cantidad total de tickets para la mañana es %d\n", total)
-		return total, nil
-	case "Tarde":
-		total = len(listaTarde)
-		fmt.Printf("\nLa cantidad total de tickets para la tarde es %d\n", total)
-		return total, nil
-	case "Noche":
-		total = len(listaNoche)
-		fmt.Printf("\nLa cantidad total de tickets para la noche es %d\n", total)
-		return total, nil
-	default:
-		// fmt.Println(e)
-		return 0, e
-
+	if cont != 0 {
+		return cont, nil
 	}
+	return 0, errors.New("No hay coincidencias para la franja horaria")
+	// 	var total int
+	// 	switch time {
+	// 	case "Madrugada":
+	// 		for _, v := range  {
+	//
+	// 		}
+	// 		total = len(listaMadrugada)
+	// 		fmt.Printf("\nLa cantidad total de tickets para la madrugada es %d", total)
+	// 		return total, nil
+	// 	case "Mañana":
+	// 		total = len(listaMañana)
+	// 		fmt.Printf("\nLa cantidad total de tickets para la mañana es %d\n", total)
+	// 		return total, nil
+	// 	case "Tarde":
+	// 		total = len(listaTarde)
+	// 		fmt.Printf("\nLa cantidad total de tickets para la tarde es %d\n", total)
+	// 		return total, nil
+	// 	case "Noche":
+	// 		total = len(listaNoche)
+	// 		fmt.Printf("\nLa cantidad total de tickets para la noche es %d\n", total)
+	// 		return total, nil
+	// 	default:
+	// 		// fmt.Println(e)
+	// 		return 0, e
+	//
+	// 	}
 
 }
 
