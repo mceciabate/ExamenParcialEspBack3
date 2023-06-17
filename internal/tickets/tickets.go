@@ -87,14 +87,6 @@ func ObtenerTotalTicketsDestino(destino string, a []Ticket) (int, error) {
 
 // Función para obtener Tickets según franja horaria
 func ObtenerTicketsFranjaHoraria(time string, a []Ticket) (int, error) {
-	// ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// var listaMañana []int
-	// var listaTarde []int
-	// var listaNoche []int
-	// var listaMadrugada []int
 	var cont int = 0
 	for _, v := range a {
 		hora := strings.Split(v.HoraVuelo, ":")
@@ -107,69 +99,30 @@ func ObtenerTicketsFranjaHoraria(time string, a []Ticket) (int, error) {
 			if horaInt >= 0 && horaInt <= 6 {
 				cont++
 			}
-			fmt.Printf("\nLa cantidad total de tickets para la madrugada es %d", cont)
-			// return cont, nil
-			// listaMadrugada = append(listaMadrugada, horaInt)
+
 		case "Mañana":
 			if horaInt >= 7 && horaInt <= 12 {
 				cont++
 			}
-			fmt.Printf("\nLa cantidad total de tickets para la mañana es %d\n", cont)
-			// return cont, nil
 
-			// listaMañana = append(listaMañana, horaInt)
 		case "Tarde":
 			if horaInt >= 13 && horaInt <= 19 {
 				cont++
 			}
-			fmt.Printf("\nLa cantidad total de tickets para la tarde es %d\n", cont)
-			// return cont, nil
-			// listaTarde = append(listaTarde, horaInt)
+
 		case "Noche":
 			if horaInt >= 20 && horaInt <= 23 {
 				cont++
 			}
-			fmt.Printf("\nLa cantidad total de tickets para la noche es %d\n", cont)
-			// return cont, nil
-
-			// listaNoche = append(listaNoche, horaInt)
-		default:
-			// fmt.Println(e)
-			fmt.Println("Ingrese una franja horaria valida")
-			// return 0, errors.New("\nIngrese una franja horaria válida")
 
 		}
 	}
 	if cont != 0 {
+		fmt.Printf("\nLa cantidad total de tickets para la %s es %d\n", time, cont)
+
 		return cont, nil
 	}
-	return 0, errors.New("No hay coincidencias para la franja horaria")
-	// 	var total int
-	// 	switch time {
-	// 	case "Madrugada":
-	// 		for _, v := range  {
-	//
-	// 		}
-	// 		total = len(listaMadrugada)
-	// 		fmt.Printf("\nLa cantidad total de tickets para la madrugada es %d", total)
-	// 		return total, nil
-	// 	case "Mañana":
-	// 		total = len(listaMañana)
-	// 		fmt.Printf("\nLa cantidad total de tickets para la mañana es %d\n", total)
-	// 		return total, nil
-	// 	case "Tarde":
-	// 		total = len(listaTarde)
-	// 		fmt.Printf("\nLa cantidad total de tickets para la tarde es %d\n", total)
-	// 		return total, nil
-	// 	case "Noche":
-	// 		total = len(listaNoche)
-	// 		fmt.Printf("\nLa cantidad total de tickets para la noche es %d\n", total)
-	// 		return total, nil
-	// 	default:
-	// 		// fmt.Println(e)
-	// 		return 0, e
-	//
-	// 	}
+	return 0, errors.New("\nIngrese una franja horaria válida")
 
 }
 
