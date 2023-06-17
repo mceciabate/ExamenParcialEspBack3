@@ -63,7 +63,6 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	return array, nil
 }
 
- 
 // Función para obtener el listado de Tickets según destino
 func ObtenerTotalTicketsDestino(destino string, a []Ticket) (int, error) {
 	acum := 0
