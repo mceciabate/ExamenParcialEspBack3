@@ -18,7 +18,6 @@ type Ticket struct {
 }
 
 // TODO PREGUNTAR POR EJECUCIÓN DEL DEFER
-// var archivo string = "tickets.csv"
 
 func manejoPanics() {
 	a := recover()
@@ -30,10 +29,7 @@ func manejoPanics() {
 // Función para obtener datos a partir del archivo.csv
 func ObtenerDatos(ruta string) ([]Ticket, error) {
 	var array []Ticket
-	// var newTicket Ticket
-	// var line4 string
 	var arrayStrings [][]string
-	// var arrayTicket []string
 	defer manejoPanics()
 	rawData, er := os.ReadFile(ruta)
 	if er != nil {
@@ -67,12 +63,9 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	return array, nil
 }
 
+ 
 // Función para obtener el listado de Tickets según destino
 func ObtenerTotalTicketsDestino(destino string, a []Ticket) (int, error) {
-	// ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
 	acum := 0
 	for _, v := range a {
 		if v.PaisDestino == destino {
@@ -128,25 +121,14 @@ func ObtenerTicketsFranjaHoraria(time string, a []Ticket) (int, error) {
 
 // Función para obtener porcentaje según destino
 func ObtenerPromedioDestinos(destino string, a []Ticket) (float64, error) {
-	// ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// e := errors.New("Error en el listado")
 	totalListado := float64(len(a))
-	// if totalListado == 0 {
-	// 	fmt.Println(e)
-	// 	return 0, e
-	// }
+	//TODO Preguntar si es correcto como esta pasado el parametro de una funcion a la otra
 	totalDestinos, er := ObtenerTotalTicketsDestino(destino, a)
 	if er != nil {
-		// fmt.Println(er)
 		return 0, er
 	}
 	parseTotalDestinos := float64(totalDestinos)
-
 	porcentaje := (parseTotalDestinos * 100) / totalListado
 	fmt.Printf("\nEl porcentaje total de tickets para el destino %s es %.2f", destino, porcentaje)
-
 	return porcentaje, nil
 }

@@ -45,8 +45,6 @@ func main() {
 		}
 	}(franjaHoraria, Listado)
 
-	// time.Sleep(1 * time.Second)
-
 	//GO ROUTINE 3
 	go func(d string, a []tickets.Ticket) {
 		_, err := tickets.ObtenerPromedioDestinos(destinoPorcentaje, Listado)
@@ -57,7 +55,7 @@ func main() {
 
 	}(destinoPorcentaje, Listado)
 
-	//TODO, NO IMPRIME NADA SIN EL TIME SLEEP
+	//FIXME, NO IMPRIME NADA SIN EL TIME SLEEP
 	time.Sleep(1 * time.Second)
 
 	fmt.Println("\n***GRACIAS POR USAR EL SERVICIO DE GOLANGAIRLINES***")
