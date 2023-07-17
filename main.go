@@ -26,7 +26,7 @@ func main() {
 	fmt.Println("\nDigite el destino para saber el porcentaje de pasajeros que viajó en el día")
 	fmt.Scan(&destinoPorcentaje)
 
-	//GO ROUTINE 1 (Ejemplo de invocación de una función dentro de una función anónima)
+	//GO ROUTINE 1 
 	go func(p string, a []tickets.Ticket) {
 		total, err := tickets.ObtenerTotalTicketsDestino(destino, Listado)
 		if err != nil {
@@ -36,7 +36,7 @@ func main() {
 		fmt.Printf("\nLa cantidad total de tickets para %s es %d", destino, total)
 	}(destino, Listado)
 
-	//GO ROUTINE 2 (Ejemplo de routine invocando la función con la paralabra reservada "go")
+	//GO ROUTINE 2 
 	go func(f string, a []tickets.Ticket) {
 		_, err := tickets.ObtenerTicketsFranjaHoraria(franjaHoraria, Listado)
 		if err != nil {
@@ -55,7 +55,7 @@ func main() {
 
 	}(destinoPorcentaje, Listado)
 
-	//FIXME, NO IMPRIME NADA SIN EL TIME SLEEP
+
 	time.Sleep(1 * time.Second)
 
 	fmt.Println("\n***GRACIAS POR USAR EL SERVICIO DE GOLANGAIRLINES***")

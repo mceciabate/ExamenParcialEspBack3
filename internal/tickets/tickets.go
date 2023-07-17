@@ -3,6 +3,7 @@ package tickets
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -17,12 +18,12 @@ type Ticket struct {
 	Precio         string
 }
 
-// TODO PREGUNTAR POR EJECUCIÓN DEL DEFER
+
 
 func manejoPanics() {
 	a := recover()
 	if a != nil {
-		fmt.Println("Cortando ejecución: ", a)
+		log.Fatal("Cortando la ejecucion: ", a)
 	}
 }
 
