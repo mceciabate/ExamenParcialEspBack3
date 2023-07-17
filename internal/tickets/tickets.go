@@ -108,13 +108,13 @@ func ObtenerTicketsFranjaHoraria(time string, a *[]Ticket) (int, error) {
 
 		}
 	}
-	if cont != 0 {
-		fmt.Printf("\nLa cantidad total de tickets para la %s es %d\n", time, cont)
-
-		return cont, nil
+	if cont == 0 {
+		return 0, errors.New("\nIngrese una franja horaria válida")
 	}
-	return 0, errors.New("\nIngrese una franja horaria válida")
+	
+	fmt.Printf("\nLa cantidad total de tickets para la %s es %d\n", time, cont)
 
+	return cont, nil
 }
 
 // Función para obtener porcentaje según destino
