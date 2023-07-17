@@ -18,8 +18,6 @@ type Ticket struct {
 	Precio         string
 }
 
-
-
 func manejoPanics() {
 	a := recover()
 	if a != nil {
@@ -35,7 +33,7 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	rawData, err := os.ReadFile(ruta)
 	if err != nil {
 		panic("Error de lectura de archivo")
-	}	
+	}
 	data := strings.Split(string(rawData), "\n ")
 	for _, v := range data {
 		line := strings.Split(v, "\n")
@@ -85,7 +83,7 @@ func ObtenerTicketsFranjaHoraria(time string, a *[]Ticket) (int, error) {
 		hora := strings.Split(v.HoraVuelo, ":")
 		horaInt, err := strconv.Atoi(hora[0])
 		if err != nil {
-			panic("Error de conversión de dato")
+			return 0, errors.New("\nError de conversión en el ticket con id " + v.Id)
 		}
 		switch time {
 		case "Madrugada":
