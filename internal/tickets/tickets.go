@@ -32,10 +32,10 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 	var array []Ticket
 	var arrayStrings [][]string
 	defer manejoPanics()
-	rawData, er := os.ReadFile(ruta)
-	if er != nil {
+	rawData, err := os.ReadFile(ruta)
+	if err != nil {
 		panic("Error de lectura de archivo")
-	}
+	}	
 	data := strings.Split(string(rawData), "\n ")
 	for _, v := range data {
 		line := strings.Split(v, "\n")
@@ -65,9 +65,9 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 }
 
 // Función para obtener el listado de Tickets según destino
-func ObtenerTotalTicketsDestino(destino string, a []Ticket) (int, error) {
+func ObtenerTotalTicketsDestino(destino string, a *[]Ticket) (int, error) {
 	acum := 0
-	for _, v := range a {
+	for _, v := range *a {
 		if v.PaisDestino == destino {
 			acum++
 		}
@@ -79,9 +79,9 @@ func ObtenerTotalTicketsDestino(destino string, a []Ticket) (int, error) {
 }
 
 // Función para obtener Tickets según franja horaria
-func ObtenerTicketsFranjaHoraria(time string, a []Ticket) (int, error) {
+func ObtenerTicketsFranjaHoraria(time string, a *[]Ticket) (int, error) {
 	var cont int = 0
-	for _, v := range a {
+	for _, v := range *a {
 		hora := strings.Split(v.HoraVuelo, ":")
 		horaInt, err := strconv.Atoi(hora[0])
 		if err != nil {
@@ -120,8 +120,8 @@ func ObtenerTicketsFranjaHoraria(time string, a []Ticket) (int, error) {
 }
 
 // Función para obtener porcentaje según destino
-func ObtenerPromedioDestinos(destino string, a []Ticket) (float64, error) {
-	totalListado := float64(len(a))
+func ObtenerPromedioDestinos(destino string, a *[]Ticket) (float64, error) {
+	totalListado := float64(len(*a))
 	//TODO Preguntar si es correcto como esta pasado el parametro de una funcion a la otra
 	totalDestinos, er := ObtenerTotalTicketsDestino(destino, a)
 	if er != nil {

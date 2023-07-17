@@ -28,7 +28,7 @@ func main() {
 
 	//GO ROUTINE 1 
 	go func(p string, a []tickets.Ticket) {
-		total, err := tickets.ObtenerTotalTicketsDestino(destino, Listado)
+		total, err := tickets.ObtenerTotalTicketsDestino(destino, &Listado)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -38,7 +38,7 @@ func main() {
 
 	//GO ROUTINE 2 
 	go func(f string, a []tickets.Ticket) {
-		_, err := tickets.ObtenerTicketsFranjaHoraria(franjaHoraria, Listado)
+		_, err := tickets.ObtenerTicketsFranjaHoraria(franjaHoraria, &Listado)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -47,7 +47,7 @@ func main() {
 
 	//GO ROUTINE 3
 	go func(d string, a []tickets.Ticket) {
-		_, err := tickets.ObtenerPromedioDestinos(destinoPorcentaje, Listado)
+		_, err := tickets.ObtenerPromedioDestinos(destinoPorcentaje, &Listado)
 		if err != nil {
 			fmt.Println(err)
 			return
