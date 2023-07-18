@@ -2,7 +2,7 @@ package tickets
 
 import (
 	"errors"
-	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -17,25 +17,20 @@ type Ticket struct {
 	Precio         string
 }
 
-var archivo string = "tickets.csv"
-
 func manejoPanics() {
 	a := recover()
 	if a != nil {
-		fmt.Println("Cortando ejecución: ", a)
+		log.Fatal("Cortando la ejecucion: ", a)
 	}
 }
 
 // Función para obtener datos a partir del archivo.csv
 func ObtenerDatos(ruta string) ([]Ticket, error) {
 	var array []Ticket
-	var newTicket Ticket
-	var line4 string
 	var arrayStrings [][]string
-	var arrayTicket []string
 	defer manejoPanics()
-	rawData, er := os.ReadFile(ruta)
-	if er != nil {
+	rawData, err := os.ReadFile(ruta)
+	if err != nil {
 		panic("Error de lectura de archivo")
 	}
 	data := strings.Split(string(rawData), "\n ")
@@ -47,9 +42,9 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 		}
 		for i := 0; i < len(arrayStrings); i++ {
 			line3 := arrayStrings[i]
-			line4 = strings.Join(line3, " ")
-			arrayTicket = strings.Split(line4, ",")
-			newTicket = Ticket{
+			line4 := strings.Join(line3, " ")
+			arrayTicket := strings.Split(line4, ",")
+			newTicket := Ticket{
 				Id:             arrayTicket[0],
 				NombreCompleto: arrayTicket[1],
 				Email:          arrayTicket[2],
@@ -60,109 +55,73 @@ func ObtenerDatos(ruta string) ([]Ticket, error) {
 			array = append(array, newTicket)
 		}
 		if len(array) == 0 {
-			return nil, errors.New("No se ha generado el listado de forma correcta")
+			return nil, errors.New("\nNo se ha generado el listado de forma correcta")
 		}
 	}
 	return array, nil
 }
 
 // Función para obtener el listado de Tickets según destino
-func ObtenerTotalTicketsDestino(destino string) (int, error) {
-	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
-	if err != nil {
-		fmt.Println(err)
-	}
-	e := errors.New("No se encontraron coincidencias con el destino")
+func ObtenerTotalTicketsDestino(destino string, a *[]Ticket) (int, error) {
 	acum := 0
-	for _, v := range ListadoRecuperadoTickets {
+	for _, v := range *a {
 		if v.PaisDestino == destino {
 			acum++
 		}
 	}
 	if acum == 0 {
-		return 0, e
+		return 0, errors.New("\nNo se encontraron coincidencias con el destino")
 	}
 	return acum, nil
 }
 
 // Función para obtener Tickets según franja horaria
-func ObtenerTicketsFranjaHoraria(time string) (int, error) {
-	defer manejoPanics()
-	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
-	if err != nil {
-		fmt.Println(err)
-	}
-	e := errors.New("Ingrese una franja horaria válida")
-	var listaMañana []int
-	var listaTarde []int
-	var listaNoche []int
-	var listaMadrugada []int
-
-	for _, v := range ListadoRecuperadoTickets {
+func ObtenerTicketsFranjaHoraria(time string, a *[]Ticket) (int, error) {
+	var cont int = 0
+	for _, v := range *a {
 		hora := strings.Split(v.HoraVuelo, ":")
 		horaInt, err := strconv.Atoi(hora[0])
 		if err != nil {
-			panic("Error de conversión de dato")
+			return 0, errors.New("\nError de conversión en el ticket con id " + v.Id)
 		}
-		switch {
-		case horaInt >= 0 && horaInt <= 6:
-			listaMadrugada = append(listaMadrugada, horaInt)
+		switch time {
+		case "Madrugada":
+			if horaInt >= 0 && horaInt <= 6 {
+				cont++
+			}
 
-		case horaInt >= 7 && horaInt <= 12:
-			listaMañana = append(listaMañana, horaInt)
-		case horaInt >= 13 && horaInt <= 19:
-			listaTarde = append(listaTarde, horaInt)
+		case "Mañana":
+			if horaInt >= 7 && horaInt <= 12 {
+				cont++
+			}
 
-		case horaInt >= 20 && horaInt <= 23:
-			listaNoche = append(listaNoche, horaInt)
+		case "Tarde":
+			if horaInt >= 13 && horaInt <= 19 {
+				cont++
+			}
+
+		case "Noche":
+			if horaInt >= 20 && horaInt <= 23 {
+				cont++
+			}
+
 		}
-
 	}
-	var total int
-	switch time {
-	case "Madrugada":
-		total = len(listaMadrugada)
-		fmt.Printf("La cantidad total de tickets para la madrugada es %d ", total)
-		return total, nil
-	case "Mañana":
-		total = len(listaMañana)
-		fmt.Printf("La cantidad total de tickets para la mañana es %d", total)
-		return total, nil
-	case "Tarde":
-		total = len(listaTarde)
-		fmt.Printf("La cantidad total de tickets para la tarde es %d", total)
-		return total, nil
-	case "Noche":
-		total = len(listaNoche)
-		fmt.Printf("La cantidad total de tickets para la noche es %d", total)
-		return total, nil
-	default:
-		fmt.Println(e)
-		return 0, e
-
+	if cont == 0 {
+		return 0, errors.New("\nIngrese una franja horaria válida")
 	}
 
+	return cont, nil
 }
 
 // Función para obtener porcentaje según destino
-func ObtenerPromedioDestinos(destino string) (float64, error) {
-	ListadoRecuperadoTickets, err := ObtenerDatos(archivo)
+func ObtenerPromedioDestinos(destino string, a *[]Ticket) (float64, error) {
+	totalListado := float64(len(*a))
+	totalDestinos, err := ObtenerTotalTicketsDestino(destino, a)
 	if err != nil {
-		fmt.Println(err)
+		return 0, err
 	}
-	e := errors.New("Error en el listado")
-	totalListado := float64(len(ListadoRecuperadoTickets))
-	totalDestinos, er := ObtenerTotalTicketsDestino(destino)
 	parseTotalDestinos := float64(totalDestinos)
-	if er != nil {
-		fmt.Println(er)
-	}
-	if totalListado == 0 {
-		fmt.Println(e)
-		return 0, e
-	}
 	porcentaje := (parseTotalDestinos * 100) / totalListado
-	fmt.Printf("El porcentaje total de tickets para el destino %s es %.2f", destino, porcentaje)
-
 	return porcentaje, nil
 }

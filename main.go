@@ -2,46 +2,62 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/mceciabate/ExamenParcialEspBack3/internal/tickets"
 )
 
 func main() {
-
+	var archivo string = "tickets.csv"
+	listado, e := tickets.ObtenerDatos(archivo)
+	if e != nil {
+		log.Fatal(e)
+	}
 	fmt.Println("***BIENVENIDO A GOLANGAIRLINES***")
 
 	var destino string
 	fmt.Println("Por favor ingrese un destino: ")
 	fmt.Scan(&destino)
-
-	//GO ROUTINE 1 (Ejemplo de invocación de una función dentro de una función anónima)
-	go func(p string) {
-		total, err := tickets.ObtenerTotalTicketsDestino(destino)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Printf("La cantidad total de tickets para %s es %d", destino, total)
-	}(destino)
-
-	time.Sleep(1 * time.Second)
-
 	var franjaHoraria string
 	fmt.Println("\nIngrese una franja horaria (Disponibles: Madrugada, Mañana, Tarde, Noche):")
 	fmt.Scan(&franjaHoraria)
-
-	//GO ROUTINE 2 (Ejemplo de routine invocando la función con la paralabra reservada "go")
-	go tickets.ObtenerTicketsFranjaHoraria(franjaHoraria)
-	time.Sleep(1 * time.Second)
-
 	var destinoPorcentaje string
 	fmt.Println("\nDigite el destino para saber el porcentaje de pasajeros que viajó en el día")
 	fmt.Scan(&destinoPorcentaje)
 
+	//GO ROUTINE 1
+	go func(p string, a []tickets.Ticket) {
+		total, err := tickets.ObtenerTotalTicketsDestino(destino, &listado)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("\nLa cantidad total de tickets para %s es %d", destino, total)
+	}(destino, listado)
+
+	//GO ROUTINE 2
+	go func(f string, a []tickets.Ticket) {
+		total, err := tickets.ObtenerTicketsFranjaHoraria(franjaHoraria, &listado)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("\nLa cantidad total de tickets para la %s es %d\n", f, total)
+
+	}(franjaHoraria, listado)
+
 	//GO ROUTINE 3
-	go func(d string) {
-		tickets.ObtenerPromedioDestinos(destinoPorcentaje)
-	}(destinoPorcentaje)
+	go func(d string, a []tickets.Ticket) {
+		porcentaje, err := tickets.ObtenerPromedioDestinos(destinoPorcentaje, &listado)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("\nEl porcentaje total de tickets para el destino %s es %.2f", d, porcentaje)
+
+	}(destinoPorcentaje, listado)
+
 	time.Sleep(1 * time.Second)
 
 	fmt.Println("\n***GRACIAS POR USAR EL SERVICIO DE GOLANGAIRLINES***")
