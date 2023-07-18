@@ -2,7 +2,6 @@ package tickets
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -111,8 +110,6 @@ func ObtenerTicketsFranjaHoraria(time string, a *[]Ticket) (int, error) {
 	if cont == 0 {
 		return 0, errors.New("\nIngrese una franja horaria válida")
 	}
-	
-	fmt.Printf("\nLa cantidad total de tickets para la %s es %d\n", time, cont)
 
 	return cont, nil
 }
@@ -120,13 +117,11 @@ func ObtenerTicketsFranjaHoraria(time string, a *[]Ticket) (int, error) {
 // Función para obtener porcentaje según destino
 func ObtenerPromedioDestinos(destino string, a *[]Ticket) (float64, error) {
 	totalListado := float64(len(*a))
-	//TODO Preguntar si es correcto como esta pasado el parametro de una funcion a la otra
-	totalDestinos, er := ObtenerTotalTicketsDestino(destino, a)
-	if er != nil {
-		return 0, er
+	totalDestinos, err := ObtenerTotalTicketsDestino(destino, a)
+	if err != nil {
+		return 0, err
 	}
 	parseTotalDestinos := float64(totalDestinos)
 	porcentaje := (parseTotalDestinos * 100) / totalListado
-	fmt.Printf("\nEl porcentaje total de tickets para el destino %s es %.2f", destino, porcentaje)
 	return porcentaje, nil
 }

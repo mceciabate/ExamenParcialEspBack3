@@ -26,7 +26,7 @@ func main() {
 	fmt.Println("\nDigite el destino para saber el porcentaje de pasajeros que viajó en el día")
 	fmt.Scan(&destinoPorcentaje)
 
-	//GO ROUTINE 1 
+	//GO ROUTINE 1
 	go func(p string, a []tickets.Ticket) {
 		total, err := tickets.ObtenerTotalTicketsDestino(destino, &Listado)
 		if err != nil {
@@ -36,25 +36,28 @@ func main() {
 		fmt.Printf("\nLa cantidad total de tickets para %s es %d", destino, total)
 	}(destino, Listado)
 
-	//GO ROUTINE 2 
+	//GO ROUTINE 2
 	go func(f string, a []tickets.Ticket) {
-		_, err := tickets.ObtenerTicketsFranjaHoraria(franjaHoraria, &Listado)
+		total, err := tickets.ObtenerTicketsFranjaHoraria(franjaHoraria, &Listado)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
+		fmt.Printf("\nLa cantidad total de tickets para la %s es %d\n", f, total)
+
 	}(franjaHoraria, Listado)
 
 	//GO ROUTINE 3
 	go func(d string, a []tickets.Ticket) {
-		_, err := tickets.ObtenerPromedioDestinos(destinoPorcentaje, &Listado)
+		porcentaje, err := tickets.ObtenerPromedioDestinos(destinoPorcentaje, &Listado)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
+		fmt.Printf("\nEl porcentaje total de tickets para el destino %s es %.2f", d, porcentaje)
+
 
 	}(destinoPorcentaje, Listado)
-
 
 	time.Sleep(1 * time.Second)
 
